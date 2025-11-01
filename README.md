@@ -1,1 +1,3 @@
-# ecommerse-api-go
+# ecommerce-api-go
+
+This projects is an fully working E Commerce Api Written using Golang
