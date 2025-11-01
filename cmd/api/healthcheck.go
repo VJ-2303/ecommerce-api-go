@@ -10,5 +10,8 @@ func (app *application) healtchCheckHandler(w http.ResponseWriter, r *http.Reque
 		"environment": app.config.env,
 		"version":     version,
 	}
-	app.writeJSON(w, http.StatusOK, envelope{"server": data})
+	err := app.writeJSON(w, http.StatusOK, envelope{"server": data})
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
 }

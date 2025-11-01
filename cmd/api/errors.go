@@ -1,0 +1,42 @@
+package main
+
+import (
+	"net/http"
+)
+
+// HanlerFunction for sending notFound error message
+func (app *application) notFoundResponse(w http.ResponseWriter, r *http.Request) {
+	message := "this resourse is not found"
+	app.errorResponse(w, r, http.StatusNotFound, message)
+}
+
+// Handler for sending methodNotAllowed error message
+func (app *application) methodNotAllowedResponse(w http.ResponseWriter, r *http.Request) {
+	message := "This method is not allowed on this specific route"
+	app.errorResponse(w, r, http.StatusMethodNotAllowed, message)
+}
+
+// logError used to log any error happened in a specific request
+// along with its method and request uri
+func (app *application) logError(r *http.Request, err error) {
+	var (
+		method = r.Method
+		uri    = r.URL.RequestURI()
+	)
+	app.logger.Error(err.Error(), "method", method, "uri", uri)
+}
+
+// errorResponse sends an generic error message to the client enclosed by the envelope
+func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, status int, message string) {
+	err := app.writeJSON(w, status, envelope{"error": message})
+	if err != nil {
+		app.logError(r, err)
+		w.WriteHeader(500)
+	}
+}
+
+func (app *application) serverErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
+	app.logError(r, err)
+	message := "The server encountered and error and could not process your request"
+	app.errorResponse(w, r, http.StatusInternalServerError, message)
+}

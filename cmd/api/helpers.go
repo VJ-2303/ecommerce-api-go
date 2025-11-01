@@ -7,6 +7,8 @@ import (
 
 type envelope map[string]any
 
+// writeJSON function decodes the given data into JSON
+// and write into provided ResponseWriter with given status code
 func (app *application) writeJSON(w http.ResponseWriter, status int, data envelope) error {
 	js, err := json.Marshal(data)
 	if err != nil {
