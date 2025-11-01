@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/VJ-2303/ecommerce-api-go/internal/data"
 )
 
 const version = "1.0.0"
@@ -14,12 +16,14 @@ const version = "1.0.0"
 type config struct {
 	port      int    // Port number for http connection
 	env       string // Environment(devolopment|staging|production)
+	dsn       string // Postgres Database connection string
 	jwtSecret string // JWT Secret string, For generating signed JWT Strings
 }
 
 type application struct {
 	config config
 	logger *slog.Logger
+	models data.Models
 }
 
 func main() {
@@ -35,10 +39,20 @@ func main() {
 	// Initialize an New Logger which writes to the os.stdOut
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
+	db, err := openDB(cfg.dsn)
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
+	defer db.Close()
+
+	logger.Info("Database connection pool established")
+
 	// Initialize the application struct by providing the required fields
 	app := &application{
 		config: cfg,
 		logger: logger,
+		models: data.NewModels(db),
 	}
 
 	// Initialize the http.Server by providing custom configurations
@@ -56,7 +70,7 @@ func main() {
 	logger.Info("starting server", "addr", srv.Addr, "env", cfg.env)
 
 	// Calling ListenAndServe on our custom server, This Block the Control and Listen for Http Requests
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 
 	// Return Error in scenarios Like Shutdown or some other un intented failures
 	// Log the error message and exit the program
