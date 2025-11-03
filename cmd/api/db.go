@@ -8,7 +8,9 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// openDB creates an sql connection using the provided connection string
 func openDB(dsn string) (*sql.DB, error) {
+	// opens an connection and using postgres as the driver name
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		return nil, err
@@ -20,6 +22,7 @@ func openDB(dsn string) (*sql.DB, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	// Ping the server to check if it available to use
 	err = db.PingContext(ctx)
 	if err != nil {
 		db.Close()
