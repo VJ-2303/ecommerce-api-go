@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"time"
+
+	_ "github.com/lib/pq"
 )
 
 func openDB(dsn string) (*sql.DB, error) {
@@ -12,7 +14,8 @@ func openDB(dsn string) (*sql.DB, error) {
 		return nil, err
 	}
 	db.SetMaxOpenConns(25)
-	db.SetConnMaxLifetime(25)
+	db.SetMaxIdleConns(10)
+	db.SetConnMaxLifetime(15 * time.Second)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

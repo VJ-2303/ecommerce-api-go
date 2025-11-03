@@ -33,6 +33,7 @@ func main() {
 	flag.IntVar(&cfg.port, "port", 4000, "API server port")
 	flag.StringVar(&cfg.env, "env", "devolopment", "Environment(devolopment|stating|production)")
 	flag.StringVar(&cfg.jwtSecret, "jwt-secret", "mysecretkey", "JWT secret string")
+	flag.StringVar(&cfg.dsn, "db-dsn", "", "Postgres DB Connection string")
 
 	flag.Parse()
 
