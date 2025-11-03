@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"errors"
 	"time"
+
+	"github.com/VJ-2303/ecommerce-api-go/internal/validator"
 )
 
 // Custom error for telling is not found in the DB
@@ -17,9 +19,25 @@ type Product struct {
 	Description    string    `json:"description"`
 	Price          int64     `json:"price"`
 	StockAvailable int       `json:"stock_available"`
-	ImageURL       *string   `json:"image_url"`
+	ImageURL       string    `json:"image_url"`
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
+}
+
+func ValidateProduct(v *validator.Validator, p *Product) {
+	// Validation checks for Name field
+	v.Check(p.Name != "", "name", "must be provided")
+	v.Check(len(p.Name) >= 5, "name", "must be longer than 5 chars")
+	v.Check(len(p.Name) <= 100, "name", "must be less than 100 chars long")
+
+	// Validation check for Price field
+	v.Check(p.Price != 0, "price", "price must be provided and greater than 0")
+
+	// Validation check for StockAvailable field
+	v.Check(p.StockAvailable != 0, "stock_available", "must be provided and greater than 0")
+
+	// Validation check for ImageURL field
+	v.Check(p.ImageURL != "", "image_url", "image url must be provided")
 }
 
 // ProductModel encloses and sql connections

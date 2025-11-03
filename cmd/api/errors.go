@@ -27,7 +27,7 @@ func (app *application) logError(r *http.Request, err error) {
 }
 
 // errorResponse sends an generic error message to the client enclosed by the envelope
-func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, status int, message string) {
+func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, status int, message any) {
 	err := app.writeJSON(w, status, envelope{"error": message})
 	if err != nil {
 		app.logError(r, err)
@@ -39,4 +39,12 @@ func (app *application) serverErrorResponse(w http.ResponseWriter, r *http.Reque
 	app.logError(r, err)
 	message := "The server encountered and error and could not process your request"
 	app.errorResponse(w, r, http.StatusInternalServerError, message)
+}
+
+func (app *application) badRequestResponse(w http.ResponseWriter, r *http.Request, err error) {
+	app.errorResponse(w, r, http.StatusBadRequest, err.Error())
+}
+
+func (app *application) failedValidationResponse(w http.ResponseWriter, r *http.Request, errors map[string]string) {
+	app.errorResponse(w, r, http.StatusUnprocessableEntity, errors)
 }

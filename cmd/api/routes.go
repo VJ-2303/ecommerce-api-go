@@ -19,6 +19,7 @@ func (app *application) routes() http.Handler {
 
 	// Products specific routes
 	router.HandlerFunc(http.MethodGet, "/v1/product/:id", app.showProductHandler)
+	router.HandlerFunc(http.MethodPost, "/v1/product", app.createProductHandler)
 
 	// Return the router
 	return router
