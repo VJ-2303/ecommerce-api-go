@@ -41,7 +41,13 @@ func (m ProductModel) Insert(product *Product) error {
 	return m.DB.QueryRowContext(ctx, query, args...).Scan(&product.ID, &product.CreatedAt, &product.UpdatedAt)
 }
 
+// Get method will an Product struct populated by the data
+// from the DB, it takes the primary key 'id' as a argument
+// and query the DB using the ID, it returns an Custom Error
+// when the Product is not found
 func (m ProductModel) Get(id int64) (*Product, error) {
+	// If the id < 1 we return immediatly
+	// because DB primary keys always starts from 1
 	if id < 1 {
 		return nil, ErrProductNotFound
 	}
@@ -65,6 +71,7 @@ func (m ProductModel) Get(id int64) (*Product, error) {
 		&p.UpdatedAt,
 	)
 	if err != nil {
+		// Return our custom Error when we sql.ErrNoRows from the DB
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrProductNotFound
 		} else {

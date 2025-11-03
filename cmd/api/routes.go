@@ -14,7 +14,11 @@ func (app *application) routes() http.Handler {
 	router.NotFound = http.HandlerFunc(app.notFoundResponse)
 	router.MethodNotAllowed = http.HandlerFunc(app.methodNotAllowedResponse)
 
+	// Healthcheck route
 	router.HandlerFunc(http.MethodGet, "/v1/healthcheck", app.healtchCheckHandler)
+
+	// Products specific routes
+	router.HandlerFunc(http.MethodGet, "/v1/product/:id", app.showProductHandler)
 
 	// Return the router
 	return router
