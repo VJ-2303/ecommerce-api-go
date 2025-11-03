@@ -35,16 +35,20 @@ func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, st
 	}
 }
 
+// this response is sented when the server had any unknown errors
 func (app *application) serverErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
 	app.logError(r, err)
 	message := "The server encountered and error and could not process your request"
 	app.errorResponse(w, r, http.StatusInternalServerError, message)
 }
 
+// this response it sended when the request body is badly formed
 func (app *application) badRequestResponse(w http.ResponseWriter, r *http.Request, err error) {
 	app.errorResponse(w, r, http.StatusBadRequest, err.Error())
 }
 
+// failedValidationResponse is sented when the Input have validation errors,
+// it takes the Errors map as argument and write the whole map inside the response body
 func (app *application) failedValidationResponse(w http.ResponseWriter, r *http.Request, errors map[string]string) {
 	app.errorResponse(w, r, http.StatusUnprocessableEntity, errors)
 }

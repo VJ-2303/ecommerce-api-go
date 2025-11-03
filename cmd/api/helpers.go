@@ -31,27 +31,37 @@ func (app *application) readIDParam(r *http.Request) (int64, error) {
 // writeJSON function decodes the given data into JSON
 // and write into provided ResponseWriter with given status code
 func (app *application) writeJSON(w http.ResponseWriter, status int, data envelope) error {
+	// Marshal the given struct into and JSON bytes array
 	js, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
 		return err
 	}
+	// Add an newline character at the end
+	// for easier readind and commandLine outputs
 	js = append(js, '\n')
 
 	w.WriteHeader(status)
 	w.Header().Set("Content-Type", "application/json")
+	// Write the JSON bytes array to the response body
 	w.Write(js)
 
 	return nil
 }
 
 func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst any) error {
+	// Only Maximum of 1mb of request body is allowed
+	// anything more than that will return an error
 	r.Body = http.MaxBytesReader(w, r.Body, 1_048_576)
 
 	defer r.Body.Close()
 
 	dec := json.NewDecoder(r.Body)
+	// Strictly disallow unknown fields which are not in the struct
+	// pointed by the dst, if unknown fields available it
+	// will produce an error
 	dec.DisallowUnknownFields()
 
+	// decode the JSON body into the struct pointed by dst
 	err := dec.Decode(dst)
 	if err != nil {
 		var syntaxError *json.SyntaxError
@@ -104,6 +114,9 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst any
 			return err
 		}
 	}
+
+	// Decode the request body second time, and check if its returning the io.EOF error
+	// if Not, it means the body have more than one JSON body
 	err = dec.Decode(&struct{}{})
 	if !errors.Is(err, io.EOF) {
 		return errors.New("body must only contain a single JSON value")

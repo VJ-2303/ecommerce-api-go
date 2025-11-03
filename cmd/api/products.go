@@ -16,8 +16,12 @@ func (app *application) showProductHandler(w http.ResponseWriter, r *http.Reques
 		app.notFoundResponse(w, r)
 		return
 	}
+
+	// Query the product using id
 	product, err := app.models.Products.Get(id)
 	if err != nil {
+		// Check for our custom error type and send not found response
+		// otherwise sent and generic serverErrorResponse
 		if errors.Is(err, data.ErrProductNotFound) {
 			app.notFoundResponse(w, r)
 		} else {
@@ -25,10 +29,12 @@ func (app *application) showProductHandler(w http.ResponseWriter, r *http.Reques
 		}
 		return
 	}
+	// Write the whole product struct in the response body
 	err = app.writeJSON(w, http.StatusOK, envelope{"product": product})
 }
 
 func (app *application) createProductHandler(w http.ResponseWriter, r *http.Request) {
+	// An temprory struct for decoding the JSON Body from the request
 	var input struct {
 		Name           string `json:"name"`
 		Description    string `json:"description"`
@@ -37,11 +43,13 @@ func (app *application) createProductHandler(w http.ResponseWriter, r *http.Requ
 		ImageURL       string `json:"image_url"`
 	}
 
+	// decoding the JSON body into the anonymous struct by providing address
 	err := app.readJSON(w, r, &input)
 	if err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
+	// Initiate an product and map the fields from input struct
 	product := &data.Product{
 		Name:           input.Name,
 		Description:    input.Description,
@@ -49,17 +57,27 @@ func (app *application) createProductHandler(w http.ResponseWriter, r *http.Requ
 		StockAvailable: input.StockAvailable,
 		ImageURL:       input.ImageURL,
 	}
+	// New Validator initiaded
 	v := validator.New()
 
+	// Validatation performed on the newly created product struct
 	if data.ValidateProduct(v, product); !v.Valid() {
+		// Sent custom error response if validation failed along with
+		// Validatator.Errors map in the response
 		app.failedValidationResponse(w, r, v.Errors)
 		return
 	}
+	// Calling the Insert method on Products Model to
+	// create an new product, it Creates new row in the products table
+	// and Fill the id, created_at, updated_at to the product struct
 	err = app.models.Products.Insert(product)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
+	// Write the complete product struct to the client
+	// Along the information they provided and along with system generated
+	// id, created_at and updated_at
 	err = app.writeJSON(w, http.StatusCreated, envelope{"product": product})
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
