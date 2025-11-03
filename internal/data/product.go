@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Custom error for telling is not found in the DB
 var ErrProductNotFound = errors.New("Product not found")
 
 // Product represents and single row in a Product table in the DB
@@ -16,7 +17,7 @@ type Product struct {
 	Description    string    `json:"description"`
 	Price          int64     `json:"price"`
 	StockAvailable int       `json:"stock_available"`
-	ImageURL       string    `json:"image_url"`
+	ImageURL       *string   `json:"image_url"`
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
 }

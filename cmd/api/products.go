@@ -26,3 +26,6 @@ func (app *application) showProductHandler(w http.ResponseWriter, r *http.Reques
 	}
 	err = app.writeJSON(w, http.StatusOK, envelope{"product": product})
 }
+
+func (app *application) createProductHandler(w http.ResponseWriter, r *http.Request) {
+}
