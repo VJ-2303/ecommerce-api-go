@@ -14,14 +14,14 @@ var ErrProductNotFound = errors.New("Product not found")
 
 // Product represents and single row in a Product table in the DB
 type Product struct {
-	ID             int64     `json:"id"`
-	Name           string    `json:"name"`
-	Description    string    `json:"description"`
-	Price          int64     `json:"price"`
-	StockAvailable int       `json:"stock_available"`
-	ImageURL       string    `json:"image_url"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
+	ID             int64  `json:"id"`
+	Name           string `json:"name"`
+	Description    string `json:"description"`
+	Price          int64  `json:"price"`
+	StockAvailable int    `json:"stock_available"`
+	ImageURL       string `json:"image_url"`
+	CreatedAt      Time   `json:"created_at"`
+	UpdatedAt      Time   `json:"updated_at"`
 }
 
 func ValidateProduct(v *validator.Validator, p *Product) {
