@@ -141,3 +141,24 @@ func (app *application) updateProductHandler(w http.ResponseWriter, r *http.Requ
 		app.serverErrorResponse(w, r, err)
 	}
 }
+
+func (app *application) deleteProductHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := app.readIDParam(r)
+	if err != nil {
+		app.notFoundResponse(w, r)
+		return
+	}
+	err = app.models.Products.Delete(id)
+	if err != nil {
+		if errors.Is(err, data.ErrProductNotFound) {
+			app.notFoundResponse(w, r)
+		} else {
+			app.serverErrorResponse(w, r, err)
+		}
+		return
+	}
+	err = app.writeJSON(w, http.StatusGone, envelope{"message": "Product deleted Successfully"})
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+}
