@@ -13,68 +13,68 @@ import (
 
 const version = "1.0.0"
 
+// config holds configuration settings for the application,
+// including server port, environment, database connection string, and JWT secret.
 type config struct {
-	port      int    // Port number for http connection
-	env       string // Environment(devolopment|staging|production)
-	dsn       string // Postgres Database connection string
-	jwtSecret string // JWT Secret string, For generating signed JWT Strings
+	port      int    // Port number for HTTP server
+	env       string // Application environment ("development", "staging", "production")
+	dsn       string // PostgreSQL database connection string
+	jwtSecret string // Secret key for signing JWT tokens
 }
 
+// application aggregates the application's dependencies and configuration.
 type application struct {
-	config config
-	logger *slog.Logger
-	models data.Models
+	config config       // Application configuration
+	logger *slog.Logger // Structured logger instance
+	models data.Models  // Data models for database access
 }
 
 func main() {
-	var cfg config // Initialize an cfg struct
+	var cfg config // Create a config struct to hold flag values
 
-	// Scan the flags into the cfg struct by passing the references
+	// Parse command-line flags into the config struct.
 	flag.IntVar(&cfg.port, "port", 4000, "API server port")
-	flag.StringVar(&cfg.env, "env", "devolopment", "Environment(devolopment|stating|production)")
+	flag.StringVar(&cfg.env, "env", "devolopment", "Environment (development|staging|production)")
 	flag.StringVar(&cfg.jwtSecret, "jwt-secret", "mysecretkey", "JWT secret string")
-	flag.StringVar(&cfg.dsn, "db-dsn", "", "Postgres DB Connection string")
-
+	flag.StringVar(&cfg.dsn, "db-dsn", "", "Postgres DB connection string")
 	flag.Parse()
 
-	// Initialize an New Logger which writes to the os.stdOut
+	// Initialize a new logger that writes structured logs to standard output.
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
+	// Attempt to open a database connection using the provided DSN.
 	db, err := openDB(cfg.dsn)
 	if err != nil {
-		logger.Error(err.Error())
+		logger.Error("failed to connect to database", "error", err)
 		os.Exit(1)
 	}
 	defer db.Close()
 
-	logger.Info("Database connection pool established")
+	logger.Info("database connection pool established")
 
-	// Initialize the application struct by providing the required fields
+	// Create the application struct, injecting configuration, logger, and models.
 	app := &application{
 		config: cfg,
 		logger: logger,
 		models: data.NewModels(db),
 	}
 
-	// Initialize the http.Server by providing custom configurations
+	// Configure the HTTP server with custom timeouts and error logging.
 	srv := &http.Server{
-		Addr:         fmt.Sprintf(":%d", cfg.port),
-		Handler:      app.routes(),
-		IdleTimeout:  time.Minute,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		// This ensures consistent error log in all over our application
-		// Using the same log which we used in the application struct
-		ErrorLog: slog.NewLogLogger(logger.Handler(), slog.LevelError),
+		Addr:         fmt.Sprintf(":%d", cfg.port),                         // Server address and port
+		Handler:      app.routes(),                                         // HTTP handler with application routes
+		IdleTimeout:  time.Minute,                                          // Maximum idle connection duration
+		ReadTimeout:  5 * time.Second,                                      // Maximum duration for reading the request
+		WriteTimeout: 10 * time.Second,                                     // Maximum duration for writing the response
+		ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError), // Use structured logger for server errors
 	}
 
 	logger.Info("starting server", "addr", srv.Addr, "env", cfg.env)
 
-	// Calling ListenAndServe on our custom server, This Block the Control and Listen for Http Requests
+	// Start the HTTP server and block until it stops.
 	err = srv.ListenAndServe()
 
-	// Return Error in scenarios Like Shutdown or some other un intented failures
-	// Log the error message and exit the program
-	logger.Error(err.Error())
+	// Log any server error (e.g., shutdown or unexpected failure) and exit.
+	logger.Error("server stopped", "error", err)
 	os.Exit(1)
 }
