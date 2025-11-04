@@ -83,3 +83,61 @@ func (app *application) createProductHandler(w http.ResponseWriter, r *http.Requ
 		app.serverErrorResponse(w, r, err)
 	}
 }
+
+func (app *application) updateProductHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := app.readIDParam(r)
+	if err != nil {
+		app.notFoundResponse(w, r)
+		return
+	}
+	p, err := app.models.Products.Get(id)
+	if err != nil {
+		if errors.Is(err, data.ErrProductNotFound) {
+			app.notFoundResponse(w, r)
+		} else {
+			app.serverErrorResponse(w, r, err)
+		}
+		return
+	}
+	var input struct {
+		Name           *string `json:"name"`
+		Description    *string `json:"description"`
+		Price          *int64  `json:"price"`
+		StockAvailable *int    `json:"stock_available"`
+		ImageURL       *string `json:"image_url"`
+	}
+	err = app.readJSON(w, r, &input)
+	if err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+	if input.Name != nil {
+		p.Name = *input.Name
+	}
+	if input.Description != nil {
+		p.Description = *input.Description
+	}
+	if input.Price != nil {
+		p.Price = *input.Price
+	}
+	if input.StockAvailable != nil {
+		p.StockAvailable = *input.StockAvailable
+	}
+	if input.ImageURL != nil {
+		p.ImageURL = *input.ImageURL
+	}
+	v := validator.New()
+	if data.ValidateProduct(v, p); !v.Valid() {
+		app.failedValidationResponse(w, r, v.Errors)
+		return
+	}
+	err = app.models.Products.Update(p)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+	err = app.writeJSON(w, http.StatusOK, envelope{"product": p})
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+}

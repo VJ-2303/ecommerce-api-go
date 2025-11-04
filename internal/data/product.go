@@ -99,3 +99,17 @@ func (m ProductModel) Get(id int64) (*Product, error) {
 	}
 	return &p, nil
 }
+
+func (m ProductModel) Update(p *Product) error {
+	query := `UPDATE products
+					 SET name = $1, description = $2, price = $3,
+					 stock_available = $4, image_url = $5, updated_at = CURRENT_TIMESTAMP
+					 WHERE id = $6`
+	args := []any{p.Name, p.Description, p.Price, p.StockAvailable, p.ImageURL, p.ID}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	_, err := m.DB.ExecContext(ctx, query, args...)
+	return err
+}
