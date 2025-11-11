@@ -19,7 +19,7 @@ type TokenModel struct {
 	DB *sql.DB
 }
 
-func (m TokenModel) New(userID int64, expiry time.Duration, Scope, secretKey string) (*Token, error) {
+func (m TokenModel) New(userID int64, expiry time.Duration, Scope, secretKey, role string) (*Token, error) {
 	token := &Token{
 		UserID: userID,
 		Expiry: time.Now().Add(expiry),
@@ -30,6 +30,7 @@ func (m TokenModel) New(userID int64, expiry time.Duration, Scope, secretKey str
 	claims["iat"] = time.Now()
 	claims["scope"] = Scope
 	claims["sub"] = fmt.Sprintf("%d", userID)
+	claims["role"] = role
 
 	jwtString := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 

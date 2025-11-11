@@ -52,3 +52,22 @@ func (app *application) CreateUserHandler(w http.ResponseWriter, r *http.Request
 		app.serverErrorResponse(w, r, err)
 	}
 }
+
+func (app *application) LoginUserHandler(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		PhoneNumber string `json:"phone_number"`
+		Password    string `json:"password"`
+	}
+	err := app.readJSON(w, r, &input)
+	if err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+	v := validator.New()
+	v.Check(validator.Matches(input.PhoneNumber, validator.PhoneNumberRegex), "phone_number", "provide an valid phone number")
+	v.Check(len(input.PhoneNumber) < 8, "password", "password must be atleast 8 characters long")
+	if !v.Valid() {
+		app.failedValidationResponse(w, r, v.Errors)
+		return
+	}
+}

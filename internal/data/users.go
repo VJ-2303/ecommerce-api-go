@@ -11,7 +11,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var ErrDuplicatePhoneNumber = errors.New("duplicate phone number")
+var (
+	ErrDuplicatePhoneNumber = errors.New("duplicate phone number")
+	ErrUserNotFound         = errors.New("user not found")
+)
 
 type User struct {
 	ID          int64    `json:"id"`
@@ -82,4 +85,32 @@ func (m UserModel) Insert(user *User) error {
 		return err
 	}
 	return nil
+}
+
+func (m UserModel) GetByPhoneNumber(phoneNumber string) (*User, error) {
+	query := `
+				SELECT id, name, phone_number, password_hash,role, created_at
+				FROM users
+				WHERE phone_number = $1
+				    `
+	var u User
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	err := m.DB.QueryRowContext(ctx, query, phoneNumber).Scan(
+		&u.ID,
+		&u.Name,
+		&u.PhoneNumber,
+		&u.Password.hash,
+		&u.Role,
+		&u.CreatedAt,
+	)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrUserNotFound
+		}
+		return nil, err
+	}
+	return &u, nil
 }
