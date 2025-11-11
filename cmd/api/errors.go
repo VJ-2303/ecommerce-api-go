@@ -56,3 +56,11 @@ func (app *application) failedValidationResponse(w http.ResponseWriter, r *http.
 func (app *application) authenticationErrorResponse(w http.ResponseWriter, r *http.Request) {
 	app.errorResponse(w, r, http.StatusUnauthorized, "Phonenumber or password is incorrect")
 }
+
+func (app *application) invalidAuthenticationTokenResponse(w http.ResponseWriter, r *http.Request) {
+	app.errorResponse(w, r, http.StatusUnauthorized, "Provide an Authorized Auth Token")
+}
+
+func (app *application) expiredTokenResponse(w http.ResponseWriter, r *http.Request) {
+	app.errorResponse(w, r, http.StatusUnauthorized, "Auth token is expired")
+}

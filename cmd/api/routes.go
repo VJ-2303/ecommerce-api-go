@@ -20,6 +20,8 @@ func (app *application) routes() http.Handler {
 	// user routes
 	router.HandlerFunc(http.MethodPost, "/v1/user/register", app.CreateUserHandler)
 	router.HandlerFunc(http.MethodPost, "/v1/user/login", app.LoginUserHandler)
+	router.HandlerFunc(http.MethodGet, "/v1/user/me", app.authenticate(app.userProfileHandler))
+	router.HandlerFunc(http.MethodGet, "/v1/admin/me", app.authenticate(app.requireAdmin(app.AdminProfileHandler)))
 
 	// Return the router
 	return app.logRequest(router)

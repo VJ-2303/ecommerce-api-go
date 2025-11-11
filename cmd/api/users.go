@@ -20,7 +20,6 @@ func (app *application) CreateUserHandler(w http.ResponseWriter, r *http.Request
 		app.badRequestResponse(w, r, err)
 		return
 	}
-	app.logger.Debug(input.Name, input.PhoneNumber, input.PlainText)
 	user := &data.User{
 		Name:        input.Name,
 		PhoneNumber: input.PhoneNumber,
@@ -95,6 +94,24 @@ func (app *application) LoginUserHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	err = app.writeJSON(w, http.StatusCreated, envelope{"auth_token": token})
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+}
+
+func (app *application) userProfileHandler(w http.ResponseWriter, r *http.Request) {
+	userID, _ := r.Context().Value(userIDKey).(int64)
+	userRole, _ := r.Context().Value(userRoleKey).(string)
+	err := app.writeJSON(w, http.StatusOK, envelope{"userID": userID, "role": userRole})
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+}
+
+func (app *application) AdminProfileHandler(w http.ResponseWriter, r *http.Request) {
+	userID, _ := r.Context().Value(userIDKey).(int64)
+	userRole, _ := r.Context().Value(userRoleKey).(string)
+	err := app.writeJSON(w, http.StatusOK, envelope{"AdminID": userID, "role": userRole})
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
