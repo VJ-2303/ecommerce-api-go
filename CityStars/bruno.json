@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "CityStars",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

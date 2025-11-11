@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/VJ-2303/ecommerce-api-go/internal/validator"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -14,11 +15,18 @@ var ErrDuplicatePhoneNumber = errors.New("duplicate phone number")
 
 type User struct {
 	ID          int64    `json:"id"`
-	Name        int64    `json:"name"`
+	Name        string   `json:"name"`
 	PhoneNumber string   `json:"phone_number"`
 	Password    password `json:"-"`
 	Role        string   `json:"role"`
 	CreatedAt   Time     `json:"created_at"`
+}
+
+func ValidateUser(v *validator.Validator, u *User) {
+	v.Check(len(u.Name) > 5, "name", "name must be provided and greater than 5 character")
+	v.Check(len(u.Password.PlainText) > 8, "password", "password length must be greater than 8 characters")
+	v.Check(len(u.Password.PlainText) < 72, "password", "password must be less than 72 characters")
+	v.Check(validator.Matches(u.PhoneNumber, validator.PhoneNumberRegex), "phone_number", "provide an valid phone number")
 }
 
 type password struct {
@@ -54,6 +62,7 @@ type UserModel struct {
 
 func (m UserModel) Insert(user *User) error {
 	query := `INSERT into users (name,phone_number,password_hash)
+					 VALUES($1,$2,$3)
 					 RETURNING id,role,created_at
 	`
 	args := []any{user.Name, user.PhoneNumber, user.Password.hash}
