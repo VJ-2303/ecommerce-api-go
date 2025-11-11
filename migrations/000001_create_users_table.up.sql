@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS users (
+    id BIGSERIAL PRIMARY KEY,
+
+    name TEXT NOT NULL,
+
+    phone_number VARCHAR(30) NOT NULL UNIQUE,
+
+    password_hash TEXT NOT NULL,
+
+    role VARCHAR(10) NOT NULL DEFAULT 'user',
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
