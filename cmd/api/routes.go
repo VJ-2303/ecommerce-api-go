@@ -22,5 +22,5 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/v1/user/login", app.LoginUserHandler)
 
 	// Return the router
-	return router
+	return app.logRequest(router)
 }
