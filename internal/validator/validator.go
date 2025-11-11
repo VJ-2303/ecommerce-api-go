@@ -1,10 +1,14 @@
 package validator
 
+import "regexp"
+
 // Validator used to hold the validation Errors in a key - message format
 // Useful methods are implemented on it
 type Validator struct {
 	Errors map[string]string
 }
+
+var PhoneNumberRegex = regexp.MustCompile("^[0-9]{10}$")
 
 // New creates and empty Validator and return a ready to use validator type
 func New() *Validator {
@@ -31,4 +35,8 @@ func (v *Validator) Check(ok bool, key, message string) {
 	if !ok {
 		v.AddError(key, message)
 	}
+}
+
+func Matches(value string, rx *regexp.Regexp) bool {
+	return rx.MatchString(value)
 }

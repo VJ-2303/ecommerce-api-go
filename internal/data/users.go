@@ -1,11 +1,16 @@
 package data
 
 import (
+	"context"
 	"database/sql"
 	"errors"
+	"strings"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
+
+var ErrDuplicatePhoneNumber = errors.New("duplicate phone number")
 
 type User struct {
 	ID          int64    `json:"id"`
@@ -45,4 +50,27 @@ func (p *password) Matches(plainText string) (bool, error) {
 
 type UserModel struct {
 	DB *sql.DB
+}
+
+func (m UserModel) Insert(user *User) error {
+	query := `INSERT into users (name,phone_number,password_hash)
+					 RETURNING id,role,created_at
+	`
+	args := []any{user.Name, user.PhoneNumber, user.Password.hash}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	err := m.DB.QueryRowContext(ctx, query, args...).Scan(
+		&user.ID,
+		&user.Role,
+		&user.CreatedAt,
+	)
+	if err != nil {
+		if strings.Contains(err.Error(), "duplicate") {
+			return ErrDuplicatePhoneNumber
+		}
+		return err
+	}
+	return nil
 }
