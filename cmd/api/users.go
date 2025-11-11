@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/VJ-2303/ecommerce-api-go/internal/data"
 	"github.com/VJ-2303/ecommerce-api-go/internal/validator"
@@ -65,9 +66,36 @@ func (app *application) LoginUserHandler(w http.ResponseWriter, r *http.Request)
 	}
 	v := validator.New()
 	v.Check(validator.Matches(input.PhoneNumber, validator.PhoneNumberRegex), "phone_number", "provide an valid phone number")
-	v.Check(len(input.PhoneNumber) < 8, "password", "password must be atleast 8 characters long")
+	v.Check(len(input.PhoneNumber) > 8, "password", "password must be atleast 8 characters long")
 	if !v.Valid() {
 		app.failedValidationResponse(w, r, v.Errors)
 		return
+	}
+	user, err := app.models.Users.GetByPhoneNumber(input.PhoneNumber)
+	if err != nil {
+		if errors.Is(err, data.ErrUserNotFound) {
+			app.authenticationErrorResponse(w, r)
+		} else {
+			app.serverErrorResponse(w, r, err)
+		}
+		return
+	}
+	match, err := user.Password.Matches(input.Password)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+	if !match {
+		app.authenticationErrorResponse(w, r)
+		return
+	}
+	token, err := app.models.Tokens.New(user.ID, 24*time.Hour, "authentication", app.config.jwtSecret, user.Role)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+	err = app.writeJSON(w, http.StatusCreated, envelope{"auth_token": token})
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
 	}
 }

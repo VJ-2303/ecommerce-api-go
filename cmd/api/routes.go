@@ -19,6 +19,7 @@ func (app *application) routes() http.Handler {
 
 	// user routes
 	router.HandlerFunc(http.MethodPost, "/v1/user/register", app.CreateUserHandler)
+	router.HandlerFunc(http.MethodPost, "/v1/user/login", app.LoginUserHandler)
 
 	// Return the router
 	return router

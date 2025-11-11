@@ -34,7 +34,7 @@ func (m TokenModel) New(userID int64, expiry time.Duration, Scope, secretKey, ro
 
 	jwtString := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	signedString, err := jwtString.SignedString(secretKey)
+	signedString, err := jwtString.SignedString([]byte(secretKey))
 	if err != nil {
 		return nil, err
 	}
