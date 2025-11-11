@@ -5,9 +5,17 @@ meta {
 }
 
 post {
-  url: 
-  body: none
+  url: http://localhost:4000/v1/user/register
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "name":"Vanaraj",
+    "password":"password123",
+    "phone_number":"9345587270"
+  }
 }
 
 settings {
