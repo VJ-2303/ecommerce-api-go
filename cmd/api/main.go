@@ -95,8 +95,8 @@ func main() {
 		Addr:         fmt.Sprintf("0.0.0.0:%d", cfg.port),                  // Bind to all interfaces for Railway
 		Handler:      app.routes(),                                         // HTTP handler with application routes
 		IdleTimeout:  time.Minute,                                          // Maximum idle connection duration
-		ReadTimeout:  5 * time.Second,                                      // Maximum duration for reading the request
-		WriteTimeout: 10 * time.Second,                                     // Maximum duration for writing the response
+		ReadTimeout:  15 * time.Second,                                     // Maximum duration for reading the request
+		WriteTimeout: 15 * time.Second,                                     // Maximum duration for writing the response
 		ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError), // Use structured logger for server errors
 	}
 
