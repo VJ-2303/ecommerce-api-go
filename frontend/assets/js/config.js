@@ -1,6 +1,6 @@
 // API Configuration
 const API_CONFIG = {
-    BASE_URL: 'http://localhost:4000',
+    BASE_URL: 'ecommerce-api-go-production-1c31.up.railway.app',
     VERSION: 'v1',
     ENDPOINTS: {
         // Auth
