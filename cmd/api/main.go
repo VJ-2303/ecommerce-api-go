@@ -33,20 +33,45 @@ func main() {
 	var cfg config // Create a config struct to hold flag values
 
 	// Get port from environment variable (Railway sets this)
-	port := 4000
-	if portEnv := os.Getenv("PORT"); portEnv != "" {
-		fmt.Sscanf(portEnv, "%d", &port)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "4000" // Default port if not set
+	}
+
+	// Get database DSN from environment (Railway uses DATABASE_URL)
+	dsn := os.Getenv("DATABASE_URL")
+	if dsn == "" {
+		dsn = os.Getenv("DB_DSN") // Fallback
+	}
+
+	// Get JWT secret from environment
+	jwtSecret := os.Getenv("JWT_SECRET")
+	if jwtSecret == "" {
+		jwtSecret = "mysecretkey" // Default for development only
+	}
+
+	// Get environment from env variable
+	environment := os.Getenv("ENVIRONMENT")
+	if environment == "" {
+		environment = "production"
 	}
 
 	// Parse command-line flags into the config struct.
-	flag.IntVar(&cfg.port, "port", port, "API server port")
-	flag.StringVar(&cfg.env, "env", "devolopment", "Environment (development|staging|production)")
-	flag.StringVar(&cfg.jwtSecret, "jwt-secret", "mysecretkey", "JWT secret string")
-	flag.StringVar(&cfg.dsn, "db-dsn", "", "Postgres DB connection string")
+	flag.IntVar(&cfg.port, "port", 4000, "API server port")
+	flag.StringVar(&cfg.env, "env", environment, "Environment (development|staging|production)")
+	flag.StringVar(&cfg.jwtSecret, "jwt-secret", jwtSecret, "JWT secret string")
+	flag.StringVar(&cfg.dsn, "db-dsn", dsn, "Postgres DB connection string")
 	flag.Parse()
 
 	// Initialize a new logger that writes structured logs to standard output.
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+
+	// Log configuration for debugging
+	logger.Info("configuration loaded",
+		"port", cfg.port,
+		"env", cfg.env,
+		"has_dsn", cfg.dsn != "",
+		"has_jwt_secret", cfg.jwtSecret != "")
 
 	// Attempt to open a database connection using the provided DSN.
 	db, err := openDB(cfg.dsn)
