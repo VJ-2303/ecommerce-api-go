@@ -9,9 +9,7 @@ import (
 	"github.com/VJ-2303/CityStars/internal/validator"
 )
 
-var (
-	ErrReportNotFound = errors.New("report not found")
-)
+var ErrReportNotFound = errors.New("report not found")
 
 // Report represents a problem report submitted by a citizen
 type Report struct {
@@ -74,7 +72,7 @@ func (m ReportModel) Insert(report *Report) error {
 		"pending",
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 12*time.Second)
 	defer cancel()
 
 	return m.DB.QueryRowContext(ctx, query, args...).Scan(
@@ -87,8 +85,8 @@ func (m ReportModel) Insert(report *Report) error {
 // Get retrieves a single report by ID with user information
 func (m ReportModel) Get(id int64) (*Report, error) {
 	query := `
-		SELECT r.id, r.user_id, r.title, r.description, r.category, r.location, 
-		       r.before_image, r.after_image, r.status, r.created_at, r.updated_at, 
+		SELECT r.id, r.user_id, r.title, r.description, r.category, r.location,
+		       r.before_image, r.after_image, r.status, r.created_at, r.updated_at,
 		       r.completed_at, u.name as user_name
 		FROM reports r
 		INNER JOIN users u ON r.user_id = u.id
@@ -98,7 +96,7 @@ func (m ReportModel) Get(id int64) (*Report, error) {
 	var report Report
 	var completedAt sql.NullTime
 
-	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 12*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query, id).Scan(
@@ -116,7 +114,6 @@ func (m ReportModel) Get(id int64) (*Report, error) {
 		&completedAt,
 		&report.UserName,
 	)
-
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrReportNotFound
@@ -135,8 +132,8 @@ func (m ReportModel) Get(id int64) (*Report, error) {
 // GetAll retrieves all reports with pagination
 func (m ReportModel) GetAll(limit, offset int, status, category string) ([]*Report, error) {
 	query := `
-		SELECT r.id, r.user_id, r.title, r.description, r.category, r.location, 
-		       r.before_image, r.after_image, r.status, r.created_at, r.updated_at, 
+		SELECT r.id, r.user_id, r.title, r.description, r.category, r.location,
+		       r.before_image, r.after_image, r.status, r.created_at, r.updated_at,
 		       r.completed_at, u.name as user_name
 		FROM reports r
 		INNER JOIN users u ON r.user_id = u.id
@@ -146,7 +143,7 @@ func (m ReportModel) GetAll(limit, offset int, status, category string) ([]*Repo
 		LIMIT $1 OFFSET $2
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 12*time.Second)
 	defer cancel()
 
 	rows, err := m.DB.QueryContext(ctx, query, limit, offset, status, category)
@@ -198,8 +195,8 @@ func (m ReportModel) GetAll(limit, offset int, status, category string) ([]*Repo
 // GetByUserID retrieves all reports by a specific user
 func (m ReportModel) GetByUserID(userID int64, limit, offset int) ([]*Report, error) {
 	query := `
-		SELECT r.id, r.user_id, r.title, r.description, r.category, r.location, 
-		       r.before_image, r.after_image, r.status, r.created_at, r.updated_at, 
+		SELECT r.id, r.user_id, r.title, r.description, r.category, r.location,
+		       r.before_image, r.after_image, r.status, r.created_at, r.updated_at,
 		       r.completed_at, u.name as user_name
 		FROM reports r
 		INNER JOIN users u ON r.user_id = u.id
@@ -208,7 +205,7 @@ func (m ReportModel) GetByUserID(userID int64, limit, offset int) ([]*Report, er
 		LIMIT $2 OFFSET $3
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 12*time.Second)
 	defer cancel()
 
 	rows, err := m.DB.QueryContext(ctx, query, userID, limit, offset)
@@ -261,15 +258,15 @@ func (m ReportModel) GetByUserID(userID int64, limit, offset int) ([]*Report, er
 func (m ReportModel) Update(id int64, status, afterImage string) error {
 	query := `
 		UPDATE reports
-		SET status = $1, 
-		    after_image = $2, 
+		SET status = $1,
+		    after_image = $2,
 		    updated_at = NOW(),
 		    completed_at = CASE WHEN $1 = 'completed' THEN NOW() ELSE completed_at END
 		WHERE id = $3
 		RETURNING id
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 12*time.Second)
 	defer cancel()
 
 	var returnedID int64
@@ -296,7 +293,7 @@ type ReportStats struct {
 // GetStats retrieves report statistics
 func (m ReportModel) GetStats() (*ReportStats, error) {
 	query := `
-		SELECT 
+		SELECT
 			COUNT(*) as total,
 			COUNT(CASE WHEN status = 'pending' THEN 1 END) as pending,
 			COUNT(CASE WHEN status = 'in-progress' THEN 1 END) as in_progress,
@@ -305,7 +302,7 @@ func (m ReportModel) GetStats() (*ReportStats, error) {
 		FROM reports
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 12*time.Second)
 	defer cancel()
 
 	var stats ReportStats
@@ -316,7 +313,6 @@ func (m ReportModel) GetStats() (*ReportStats, error) {
 		&stats.CompletedReports,
 		&stats.RejectedReports,
 	)
-
 	if err != nil {
 		return nil, err
 	}
@@ -343,7 +339,7 @@ func (m ReportModel) GetLeaderboard() ([]*LeaderboardEntry, error) {
 		LIMIT 10
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 12*time.Second)
 	defer cancel()
 
 	rows, err := m.DB.QueryContext(ctx, query)
