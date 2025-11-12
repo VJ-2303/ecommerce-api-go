@@ -53,14 +53,15 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="afterImage">After Image (URL):</label>
+                        <label for="afterImage">After Image:</label>
                         <input 
-                            type="url" 
+                            type="file" 
                             id="afterImage" 
                             name="after_image" 
-                            placeholder="https://example.com/after-image.jpg"
+                            accept="image/*"
                         >
-                        <span class="form-hint">Required when marking as completed</span>
+                        <span class="form-hint">Required when marking as completed (max 5MB)</span>
+                        <div class="image-preview" id="afterImagePreview"></div>
                     </div>
                     <div class="form-error" id="updateError"></div>
                     <button type="submit" class="btn btn-primary" id="updateBtn">

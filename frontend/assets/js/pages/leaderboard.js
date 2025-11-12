@@ -36,11 +36,11 @@ function displayPodium(topThree) {
         return;
     }
 
-    // Reorder for podium display: 2nd, 1st, 3rd
+    // Reorder for podium display: 2nd, 1st, 3rd (visual hierarchy)
     const podiumOrder = [];
-    if (topThree[1]) podiumOrder.push({ ...topThree[1], rank: 2 });
-    if (topThree[0]) podiumOrder.push({ ...topThree[0], rank: 1 });
-    if (topThree[2]) podiumOrder.push({ ...topThree[2], rank: 3 });
+    if (topThree[1]) podiumOrder.push({ ...topThree[1], rank: 2, displayRank: '🥈' });
+    if (topThree[0]) podiumOrder.push({ ...topThree[0], rank: 1, displayRank: '🥇' });
+    if (topThree[2]) podiumOrder.push({ ...topThree[2], rank: 3, displayRank: '🥉' });
 
     podium.innerHTML = '';
 
@@ -48,12 +48,10 @@ function displayPodium(topThree) {
         const place = document.createElement('div');
         place.className = 'podium-place';
         
-        const medals = { 1: '🥇', 2: '🥈', 3: '🥉' };
-        
         place.innerHTML = `
-            <div class="podium-rank">${medals[entry.rank]}</div>
+            <div class="podium-rank">${entry.displayRank}</div>
             <div class="podium-name">${escapeHtml(entry.user_name)}</div>
-            <div class="podium-count">${entry.report_count} reports</div>
+            <div class="podium-count">${entry.report_count} ${entry.report_count === 1 ? 'report' : 'reports'}</div>
         `;
         
         podium.appendChild(place);
@@ -68,20 +66,20 @@ function displayLeaderboardTable(leaderboard) {
     leaderboard.forEach((entry, index) => {
         const row = document.createElement('tr');
         
-        const rankClass = index < 3 ? 'rank-badge' : '';
-        const rankEmoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+        const medals = ['🥇', '🥈', '🥉'];
+        const isTopThree = index < 3;
         
         row.innerHTML = `
             <td>
-                ${rankClass ? `<span class="${rankClass}">${rankEmoji}</span>` : index + 1}
+                ${isTopThree ? `<span class="rank-badge">${medals[index]}</span>` : `<span>${index + 1}</span>`}
             </td>
             <td>
                 <strong>${escapeHtml(entry.user_name)}</strong>
-                <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                <div style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 2px;">
                     ${escapeHtml(entry.phone_number)}
                 </div>
             </td>
-            <td><strong>${entry.report_count}</strong></td>
+            <td><strong>${entry.report_count}</strong> ${entry.report_count === 1 ? 'report' : 'reports'}</td>
         `;
         
         tbody.appendChild(row);

@@ -128,6 +128,43 @@ function displayReportDetail(report) {
 
 function setupAdminPanel() {
     const updateForm = document.getElementById('updateForm');
+    const afterImageInput = document.getElementById('afterImage');
+    const afterImagePreview = document.getElementById('afterImagePreview');
+
+    // Image preview for after image
+    if (afterImageInput && afterImagePreview) {
+        afterImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file size (5MB max)
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('Image size must be less than 5MB', 'error');
+                    afterImageInput.value = '';
+                    afterImagePreview.classList.remove('show');
+                    return;
+                }
+
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    showToast('Please upload an image file', 'error');
+                    afterImageInput.value = '';
+                    afterImagePreview.classList.remove('show');
+                    return;
+                }
+
+                // Preview image
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    afterImagePreview.innerHTML = `<img src="${e.target.result}" alt="After Image Preview">`;
+                    afterImagePreview.classList.add('show');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                afterImagePreview.classList.remove('show');
+            }
+        });
+    }
+
     if (updateForm) {
         updateForm.addEventListener('submit', handleUpdateReport);
     }
@@ -145,11 +182,8 @@ function showAdminPanel(report) {
         statusSelect.value = report.status;
     }
 
-    // Pre-fill after image if exists
-    const afterImageInput = document.getElementById('afterImage');
-    if (afterImageInput && report.after_image) {
-        afterImageInput.value = report.after_image;
-    }
+    // Note: File input cannot be pre-filled for security reasons
+    // But if there's an existing after_image, we can show it in the detail view
 }
 
 async function handleUpdateReport(e) {
@@ -158,14 +192,14 @@ async function handleUpdateReport(e) {
     const updateBtn = document.getElementById('updateBtn');
     const updateError = document.getElementById('updateError');
     const status = document.getElementById('status').value;
-    const afterImage = document.getElementById('afterImage').value.trim();
+    const afterImageFile = document.getElementById('afterImage').files[0];
 
     // Clear previous errors
     updateError.textContent = '';
     updateError.classList.remove('show');
 
     // Validate
-    if (status === 'completed' && !afterImage) {
+    if (status === 'completed' && !afterImageFile && !currentReport.after_image) {
         updateError.textContent = 'After image is required when marking as completed';
         updateError.classList.add('show');
         return;
@@ -174,9 +208,22 @@ async function handleUpdateReport(e) {
     setLoadingState(updateBtn, true);
 
     try {
+        let afterImageBase64 = currentReport.after_image || '';
+        
+        // Convert new image to base64 if uploaded
+        if (afterImageFile) {
+            if (afterImageFile.size > 5 * 1024 * 1024) {
+                updateError.textContent = 'Image size must be less than 5MB';
+                updateError.classList.add('show');
+                setLoadingState(updateBtn, false);
+                return;
+            }
+            afterImageBase64 = await fileToBase64(afterImageFile);
+        }
+
         await reportsApi.update(reportId, {
             status,
-            after_image: afterImage
+            after_image: afterImageBase64
         });
 
         showToast('Report updated successfully!', 'success');

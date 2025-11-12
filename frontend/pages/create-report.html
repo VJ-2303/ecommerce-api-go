@@ -102,15 +102,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="beforeImage">Before Image (URL) *</label>
+                        <label for="beforeImage">Before Image *</label>
                         <input 
-                            type="url" 
+                            type="file" 
                             id="beforeImage" 
                             name="before_image" 
-                            placeholder="https://example.com/image.jpg" 
+                            accept="image/*"
                             required
                         >
-                        <span class="form-hint">Provide a valid image URL showing the issue</span>
+                        <span class="form-hint">Upload an image showing the issue (max 5MB)</span>
                         <span class="form-error" id="beforeImageError"></span>
                         <div class="image-preview" id="imagePreview"></div>
                     </div>

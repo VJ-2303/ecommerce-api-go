@@ -6,13 +6,18 @@
     min-height: calc(100vh - 80px);
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: var(--spacing-2xl) 0;
+    width: 100%;
 }
 
 .auth-container,
 .form-container {
     max-width: 500px;
     margin: 0 auto;
+    width: 100%;
+    padding: 0 var(--spacing-md);
+    box-sizing: border-box;
 }
 
 .form-container {
@@ -25,6 +30,8 @@
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     padding: var(--spacing-2xl);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .auth-header,
@@ -72,6 +79,11 @@
     border-radius: var(--radius-md);
     font-size: 1rem;
     transition: border-color var(--transition-fast);
+}
+
+.form-group input[type="file"] {
+    padding: var(--spacing-sm);
+    cursor: pointer;
 }
 
 .form-group input:focus,
@@ -167,6 +179,8 @@
     border-radius: var(--radius-md);
     overflow: hidden;
     display: none;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-tertiary);
 }
 
 .image-preview.show {
@@ -176,7 +190,8 @@
 .image-preview img {
     width: 100%;
     max-height: 300px;
-    object-fit: cover;
+    object-fit: contain;
+    display: block;
 }
 
 .report-form {
@@ -184,4 +199,6 @@
     padding: var(--spacing-2xl);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
+    width: 100%;
+    box-sizing: border-box;
 }

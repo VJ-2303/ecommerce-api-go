@@ -2,33 +2,37 @@
    CSS VARIABLES & RESET
    =========================== */
 :root {
-    /* Colors */
-    --primary-color: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #818cf8;
-    --secondary-color: #10b981;
-    --danger-color: #ef4444;
+    /* Colors - Modern Teal & Coral Palette */
+    --primary-color: #14b8a6;
+    --primary-dark: #0f766e;
+    --primary-light: #5eead4;
+    --secondary-color: #06b6d4;
+    --danger-color: #f43f5e;
     --warning-color: #f59e0b;
     --info-color: #3b82f6;
+    --accent-color: #fb7185;
     
     /* Status Colors */
     --status-pending: #f59e0b;
-    --status-in-progress: #3b82f6;
+    --status-in-progress: #06b6d4;
     --status-completed: #10b981;
-    --status-rejected: #ef4444;
+    --status-rejected: #f43f5e;
     
-    /* Neutrals */
-    --text-primary: #1f2937;
-    --text-secondary: #6b7280;
-    --text-light: #9ca3af;
+    /* Neutrals - Softer tones */
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-light: #94a3b8;
     --bg-primary: #ffffff;
-    --bg-secondary: #f9fafb;
-    --bg-tertiary: #f3f4f6;
-    --border-color: #e5e7eb;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --bg-gradient: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+    --bg-gradient-hero: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 50%, #22c55e 100%);
+    --border-color: #e2e8f0;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-colored: 0 10px 25px -5px rgba(20, 184, 166, 0.3);
     
     /* Spacing */
     --spacing-xs: 0.25rem;
@@ -72,10 +76,18 @@ html {
 body {
     font-family: var(--font-sans);
     color: var(--text-primary);
-    background-color: var(--bg-secondary);
+    background: linear-gradient(to bottom, #f8fafc 0%, #e0f2fe 100%);
+    background-attachment: fixed;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+html {
+    overflow-x: hidden;
+    width: 100%;
 }
 
 img {
@@ -127,11 +139,13 @@ select {
    NAVIGATION
    =========================== */
 .navbar {
-    background-color: var(--bg-primary);
-    box-shadow: var(--shadow-sm);
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-md);
     position: sticky;
     top: 0;
     z-index: 1000;
+    border-bottom: 1px solid rgba(20, 184, 166, 0.1);
 }
 
 .navbar .container {
@@ -195,8 +209,21 @@ select {
    =========================== */
 .hero {
     padding: var(--spacing-2xl) 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--bg-gradient-hero);
     color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.4;
 }
 
 .hero .container {
@@ -204,6 +231,8 @@ select {
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-2xl);
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 .hero-title {
@@ -223,6 +252,33 @@ select {
     display: flex;
     gap: var(--spacing-md);
     flex-wrap: wrap;
+}
+
+.hero-actions .btn-primary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid white;
+    font-weight: 600;
+}
+
+.hero-actions .btn-primary:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+}
+
+.hero-actions .btn-outline {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.hero-actions .btn-outline:hover:not(:disabled) {
+    background-color: white;
+    color: var(--primary-color);
+    border-color: white;
 }
 
 .hero-illustration {
@@ -271,7 +327,7 @@ select {
    =========================== */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: var(--spacing-lg);
 }
 
@@ -286,7 +342,7 @@ select {
 
 .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-colored);
 }
 
 .stat-icon {
@@ -313,7 +369,7 @@ select {
    =========================== */
 .categories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: var(--spacing-lg);
 }
 
@@ -328,8 +384,8 @@ select {
 
 .category-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    background-color: var(--primary-color);
+    box-shadow: var(--shadow-colored);
+    background: var(--bg-gradient);
     color: white;
 }
 
@@ -347,7 +403,7 @@ select {
    =========================== */
 .reports-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
 }
@@ -356,7 +412,7 @@ select {
    FOOTER
    =========================== */
 .footer {
-    background-color: var(--text-primary);
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     color: white;
     padding: var(--spacing-2xl) 0 var(--spacing-lg);
     margin-top: var(--spacing-2xl);
