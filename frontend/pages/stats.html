@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics - CityStars</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="../index.html">
+                    <span class="logo">🌟</span>
+                    <span class="brand-name">CityStars</span>
+                </a>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="reports.html" class="nav-link">Reports</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="stats.html" class="nav-link active">Stats</a>
+                <div class="nav-auth" id="navAuth">
+                    <a href="login.html" class="btn btn-outline">Login</a>
+                </div>
+                <div class="nav-user hidden" id="navUser">
+                    <a href="my-reports.html" class="nav-link">My Reports</a>
+                    <button class="btn btn-outline" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Statistics Section -->
+    <section class="stats-page-section">
+        <div class="container">
+            <div class="section-header">
+                <h1>📊 Statistics Dashboard</h1>
+                <p>Track the impact of community reporting</p>
+            </div>
+
+            <!-- Main Stats Grid -->
+            <div class="stats-grid large" id="statsGrid">
+                <div class="stat-card large">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value" id="totalReports">-</div>
+                    <div class="stat-label">Total Reports</div>
+                </div>
+                <div class="stat-card large">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-value" id="pendingReports">-</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card large">
+                    <div class="stat-icon">🔧</div>
+                    <div class="stat-value" id="inProgressReports">-</div>
+                    <div class="stat-label">In Progress</div>
+                </div>
+                <div class="stat-card large">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-value" id="completedReports">-</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card large">
+                    <div class="stat-icon">❌</div>
+                    <div class="stat-value" id="rejectedReports">-</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="progress-section">
+                <h2>Completion Progress</h2>
+                <div class="progress-card">
+                    <div class="progress-info">
+                        <span>Reports Resolved</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="quick-links">
+                <h2>Quick Actions</h2>
+                <div class="quick-links-grid">
+                    <a href="reports.html?status=pending" class="quick-link-card">
+                        <div class="quick-link-icon">⏳</div>
+                        <div class="quick-link-text">View Pending</div>
+                    </a>
+                    <a href="reports.html?status=completed" class="quick-link-card">
+                        <div class="quick-link-icon">✅</div>
+                        <div class="quick-link-text">View Completed</div>
+                    </a>
+                    <a href="create-report.html" class="quick-link-card">
+                        <div class="quick-link-icon">➕</div>
+                        <div class="quick-link-text">Create Report</div>
+                    </a>
+                    <a href="leaderboard.html" class="quick-link-card">
+                        <div class="quick-link-icon">🏆</div>
+                        <div class="quick-link-text">Leaderboard</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/pages/stats.js"></script>
+</body>
+</html>

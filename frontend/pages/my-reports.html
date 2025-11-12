@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reports - CityStars</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="../index.html">
+                    <span class="logo">🌟</span>
+                    <span class="brand-name">CityStars</span>
+                </a>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="reports.html" class="nav-link">Reports</a>
+                <a href="my-reports.html" class="nav-link active">My Reports</a>
+                <a href="profile.html" class="nav-link">Profile</a>
+                <button class="btn btn-outline" id="logoutBtn">Logout</button>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- My Reports Section -->
+    <section class="reports-section">
+        <div class="container">
+            <div class="section-header">
+                <h1>My Reports</h1>
+                <a href="create-report.html" class="btn btn-primary">+ New Report</a>
+            </div>
+
+            <!-- Reports Grid -->
+            <div class="reports-grid" id="myReportsGrid">
+                <div class="loading">Loading your reports...</div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <button class="btn btn-outline" id="prevBtn" disabled>Previous</button>
+                <span class="pagination-info" id="paginationInfo">Page 1</span>
+                <button class="btn btn-outline" id="nextBtn">Next</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/pages/my-reports.js"></script>
+</body>
+</html>

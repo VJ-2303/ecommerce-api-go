@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityStars - Report Civic Issues</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="logo">🌟</span>
+                <span class="brand-name">CityStars</span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="pages/reports.html" class="nav-link">Reports</a>
+                <a href="pages/leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="pages/stats.html" class="nav-link">Stats</a>
+                <div class="nav-auth" id="navAuth">
+                    <a href="pages/login.html" class="btn btn-outline" id="loginBtn">Login</a>
+                    <a href="pages/register.html" class="btn btn-primary" id="registerBtn">Register</a>
+                </div>
+                <div class="nav-user hidden" id="navUser">
+                    <a href="pages/my-reports.html" class="nav-link">My Reports</a>
+                    <a href="pages/profile.html" class="nav-link">Profile</a>
+                    <button class="btn btn-outline" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Make Your City Better</h1>
+                <p class="hero-subtitle">Report civic issues and help improve your community. Together, we can make a difference.</p>
+                <div class="hero-actions">
+                    <a href="pages/create-report.html" class="btn btn-primary btn-lg" id="heroReportBtn">Report an Issue</a>
+                    <a href="pages/reports.html" class="btn btn-outline btn-lg">View Reports</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-illustration">
+                    <span class="illustration-icon">🏙️</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Overview -->
+    <section class="stats-section">
+        <div class="container">
+            <h2 class="section-title">Community Impact</h2>
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value" id="totalReports">-</div>
+                    <div class="stat-label">Total Reports</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-value" id="pendingReports">-</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔧</div>
+                    <div class="stat-value" id="inProgressReports">-</div>
+                    <div class="stat-label">In Progress</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-value" id="completedReports">-</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Report Categories</h2>
+            <div class="categories-grid">
+                <a href="pages/reports.html?category=pothole" class="category-card">
+                    <div class="category-icon">🕳️</div>
+                    <div class="category-name">Potholes</div>
+                </a>
+                <a href="pages/reports.html?category=streetlight" class="category-card">
+                    <div class="category-icon">💡</div>
+                    <div class="category-name">Street Lights</div>
+                </a>
+                <a href="pages/reports.html?category=water" class="category-card">
+                    <div class="category-icon">💧</div>
+                    <div class="category-name">Water Issues</div>
+                </a>
+                <a href="pages/reports.html?category=garbage" class="category-card">
+                    <div class="category-icon">🗑️</div>
+                    <div class="category-name">Garbage</div>
+                </a>
+                <a href="pages/reports.html?category=road" class="category-card">
+                    <div class="category-icon">🛣️</div>
+                    <div class="category-name">Road Issues</div>
+                </a>
+                <a href="pages/reports.html?category=other" class="category-card">
+                    <div class="category-icon">📝</div>
+                    <div class="category-name">Other</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Reports -->
+    <section class="recent-reports-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Recent Reports</h2>
+                <a href="pages/reports.html" class="btn btn-text">View All →</a>
+            </div>
+            <div class="reports-grid" id="recentReportsGrid">
+                <div class="loading">Loading reports...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <span class="logo">🌟</span>
+                        <span class="brand-name">CityStars</span>
+                    </div>
+                    <p class="footer-description">Making cities better, one report at a time.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <a href="pages/reports.html">All Reports</a>
+                        <a href="pages/create-report.html">Report Issue</a>
+                        <a href="pages/leaderboard.html">Leaderboard</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Account</h4>
+                        <a href="pages/login.html">Login</a>
+                        <a href="pages/register.html">Register</a>
+                        <a href="pages/profile.html">Profile</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CityStars. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Scripts -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Details - CityStars</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="../assets/css/forms.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="../index.html">
+                    <span class="logo">🌟</span>
+                    <span class="brand-name">CityStars</span>
+                </a>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="reports.html" class="nav-link">Reports</a>
+                <div class="nav-user hidden" id="navUser">
+                    <a href="my-reports.html" class="nav-link">My Reports</a>
+                    <button class="btn btn-outline" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Report Detail -->
+    <section class="detail-section">
+        <div class="container">
+            <button class="btn btn-text back-btn" onclick="window.history.back()">← Back to Reports</button>
+            
+            <div class="detail-container" id="reportDetail">
+                <div class="loading">Loading report details...</div>
+            </div>
+
+            <!-- Admin Update Form -->
+            <div class="admin-panel hidden" id="adminPanel">
+                <h3>Admin Actions</h3>
+                <form class="admin-form" id="updateForm">
+                    <div class="form-group">
+                        <label for="status">Update Status:</label>
+                        <select id="status" name="status" required>
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="afterImage">After Image (URL):</label>
+                        <input 
+                            type="url" 
+                            id="afterImage" 
+                            name="after_image" 
+                            placeholder="https://example.com/after-image.jpg"
+                        >
+                        <span class="form-hint">Required when marking as completed</span>
+                    </div>
+                    <div class="form-error" id="updateError"></div>
+                    <button type="submit" class="btn btn-primary" id="updateBtn">
+                        <span class="btn-text">Update Report</span>
+                        <span class="btn-loader hidden">Updating...</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/pages/report-detail.js"></script>
+</body>
+</html>

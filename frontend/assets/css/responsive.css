@@ -1,0 +1,344 @@
+/* ===========================
+   RESPONSIVE DESIGN
+   =========================== */
+
+/* Tablet and below */
+@media (max-width: 768px) {
+    /* Navigation */
+    .nav-menu {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: var(--bg-primary);
+        flex-direction: column;
+        align-items: stretch;
+        padding: var(--spacing-lg);
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: all var(--transition-base);
+        pointer-events: none;
+    }
+
+    .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-auth,
+    .nav-user {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .nav-auth .btn,
+    .nav-user .btn {
+        width: 100%;
+    }
+
+    /* Hero */
+    .hero .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .illustration-icon {
+        font-size: 6rem;
+    }
+
+    /* Stats */
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    /* Categories */
+    .categories-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    /* Reports */
+    .reports-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Footer */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    /* Detail Images */
+    .detail-image-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* Filters */
+    .filters-container {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .filter-select {
+        flex: 1;
+    }
+
+    /* Podium */
+    .podium {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .podium-place {
+        max-width: 100%;
+    }
+
+    /* Form Actions */
+    .form-actions {
+        flex-direction: column;
+    }
+
+    /* Hero Actions */
+    .hero-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero-actions .btn {
+        width: 100%;
+    }
+
+    /* Section Header */
+    .section-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .section-header .btn {
+        width: 100%;
+    }
+
+    /* Profile Actions */
+    .profile-actions {
+        flex-direction: column;
+    }
+
+    .profile-actions .btn {
+        width: 100%;
+        min-width: auto;
+    }
+
+    /* Quick Links */
+    .quick-links-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Leaderboard Table */
+    .leaderboard-table {
+        overflow-x: auto;
+    }
+
+    .leaderboard-table table {
+        min-width: 500px;
+    }
+
+    /* Pagination */
+    .pagination {
+        flex-wrap: wrap;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    /* Typography */
+    .hero-title {
+        font-size: 1.75rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    /* Spacing */
+    .hero,
+    .stats-section,
+    .categories-section,
+    .recent-reports-section,
+    .reports-section,
+    .detail-section,
+    .profile-section,
+    .stats-page-section,
+    .leaderboard-section {
+        padding: var(--spacing-xl) 0;
+    }
+
+    /* Container */
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    /* Stats */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+    }
+
+    /* Categories */
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+
+    .category-icon {
+        font-size: 2rem;
+    }
+
+    /* Cards */
+    .auth-card,
+    .report-form,
+    .detail-content,
+    .admin-panel {
+        padding: var(--spacing-lg);
+    }
+
+    /* Buttons */
+    .btn-lg {
+        padding: var(--spacing-md);
+        font-size: 1rem;
+    }
+
+    /* Report Card */
+    .report-image {
+        height: 150px;
+    }
+
+    .report-content {
+        padding: var(--spacing-md);
+    }
+
+    /* Detail Image */
+    .detail-image {
+        height: 200px;
+    }
+
+    /* Toast */
+    .toast {
+        left: var(--spacing-md);
+        right: var(--spacing-md);
+        bottom: var(--spacing-md);
+    }
+
+    /* Illustration */
+    .illustration-icon {
+        font-size: 4rem;
+    }
+
+    /* Podium */
+    .podium-rank {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 1.5rem !important;
+    }
+
+    .podium-place:nth-child(1) .podium-rank {
+        width: 80px !important;
+        height: 80px !important;
+        font-size: 2rem !important;
+    }
+}
+
+/* Large screens */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1400px;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .footer,
+    .btn,
+    .filters-container,
+    .pagination,
+    .admin-panel {
+        display: none !important;
+    }
+
+    body {
+        background-color: white;
+    }
+
+    .detail-container {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    /* Uncomment to enable dark mode */
+    /*
+    :root {
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --text-light: #9ca3af;
+        --bg-primary: #1f2937;
+        --bg-secondary: #111827;
+        --bg-tertiary: #374151;
+        --border-color: #374151;
+    }
+    */
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .btn-outline {
+        border-width: 3px;
+    }
+
+    .report-card,
+    .stat-card,
+    .category-card {
+        border: 2px solid var(--text-primary);
+    }
+}

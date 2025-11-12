@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Report - CityStars</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="../assets/css/forms.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="../index.html">
+                    <span class="logo">🌟</span>
+                    <span class="brand-name">CityStars</span>
+                </a>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="reports.html" class="nav-link">Reports</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <div class="nav-user hidden" id="navUser">
+                    <a href="my-reports.html" class="nav-link">My Reports</a>
+                    <button class="btn btn-outline" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Create Report Form -->
+    <section class="form-section">
+        <div class="container">
+            <div class="form-container">
+                <div class="form-header">
+                    <h1>Report an Issue</h1>
+                    <p>Help improve your community by reporting civic issues</p>
+                </div>
+                <form class="report-form" id="reportForm">
+                    <div class="form-group">
+                        <label for="title">Title *</label>
+                        <input 
+                            type="text" 
+                            id="title" 
+                            name="title" 
+                            placeholder="Brief description of the issue" 
+                            required
+                            maxlength="200"
+                        >
+                        <span class="form-hint">Max 200 characters</span>
+                        <span class="form-error" id="titleError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category *</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select a category</option>
+                            <option value="pothole">🕳️ Pothole</option>
+                            <option value="streetlight">💡 Street Light</option>
+                            <option value="water">💧 Water Issue</option>
+                            <option value="garbage">🗑️ Garbage</option>
+                            <option value="road">🛣️ Road Issue</option>
+                            <option value="other">📝 Other</option>
+                        </select>
+                        <span class="form-error" id="categoryError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location *</label>
+                        <input 
+                            type="text" 
+                            id="location" 
+                            name="location" 
+                            placeholder="Exact location or nearest landmark" 
+                            required
+                            maxlength="500"
+                        >
+                        <span class="form-hint">Max 500 characters</span>
+                        <span class="form-error" id="locationError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <textarea 
+                            id="description" 
+                            name="description" 
+                            placeholder="Provide detailed information about the issue" 
+                            required
+                            rows="5"
+                            maxlength="2000"
+                        ></textarea>
+                        <span class="form-hint">Max 2000 characters</span>
+                        <span class="form-error" id="descriptionError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="beforeImage">Before Image (URL) *</label>
+                        <input 
+                            type="url" 
+                            id="beforeImage" 
+                            name="before_image" 
+                            placeholder="https://example.com/image.jpg" 
+                            required
+                        >
+                        <span class="form-hint">Provide a valid image URL showing the issue</span>
+                        <span class="form-error" id="beforeImageError"></span>
+                        <div class="image-preview" id="imagePreview"></div>
+                    </div>
+
+                    <div class="form-error general-error" id="generalError"></div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="window.history.back()">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span class="btn-text">Submit Report</span>
+                            <span class="btn-loader hidden">Submitting...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/pages/create-report.js"></script>
+</body>
+</html>
