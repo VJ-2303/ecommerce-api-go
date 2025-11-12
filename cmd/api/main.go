@@ -32,8 +32,14 @@ type application struct {
 func main() {
 	var cfg config // Create a config struct to hold flag values
 
+	// Get port from environment variable (Railway sets this)
+	port := 4000
+	if portEnv := os.Getenv("PORT"); portEnv != "" {
+		fmt.Sscanf(portEnv, "%d", &port)
+	}
+
 	// Parse command-line flags into the config struct.
-	flag.IntVar(&cfg.port, "port", 4000, "API server port")
+	flag.IntVar(&cfg.port, "port", port, "API server port")
 	flag.StringVar(&cfg.env, "env", "devolopment", "Environment (development|staging|production)")
 	flag.StringVar(&cfg.jwtSecret, "jwt-secret", "mysecretkey", "JWT secret string")
 	flag.StringVar(&cfg.dsn, "db-dsn", "", "Postgres DB connection string")
@@ -61,7 +67,7 @@ func main() {
 
 	// Configure the HTTP server with custom timeouts and error logging.
 	srv := &http.Server{
-		Addr:         fmt.Sprintf(":%d", cfg.port),                         // Server address and port
+		Addr:         fmt.Sprintf("0.0.0.0:%d", cfg.port),                  // Bind to all interfaces for Railway
 		Handler:      app.routes(),                                         // HTTP handler with application routes
 		IdleTimeout:  time.Minute,                                          // Maximum idle connection duration
 		ReadTimeout:  5 * time.Second,                                      // Maximum duration for reading the request
