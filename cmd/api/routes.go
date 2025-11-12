@@ -17,7 +17,7 @@ func (app *application) routes() http.Handler {
 
 	// Enable CORS for frontend
 	router.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:*", "http://127.0.0.1:*", "https://city-stars.netlify.app/*"},
+		AllowedOrigins:   []string{"http://localhost:*", "http://127.0.0.1:*", "https://city-stars.netlify.app"},
 		AllowedMethods:   []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
 		ExposedHeaders:   []string{"Link"},
