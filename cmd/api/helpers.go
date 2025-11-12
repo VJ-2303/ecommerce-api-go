@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/go-chi/chi/v5"
 )
 
 // an custom type envelope is used to enclose the
@@ -20,8 +20,8 @@ type envelope map[string]any
 // And get the specific paramter named 'id', And convert it to integer before returning
 // if the conversion fails or the 'id' is less than 1 it returns an error message
 func (app *application) readIDParam(r *http.Request) (int64, error) {
-	params := httprouter.ParamsFromContext(r.Context())
-	id, err := strconv.ParseInt(params.ByName("id"), 10, 64)
+	idParam := chi.URLParam(r, "id")
+	id, err := strconv.ParseInt(idParam, 10, 64)
 	if id < 1 || err != nil {
 		return 0, errors.New("invalid id parameter")
 	}

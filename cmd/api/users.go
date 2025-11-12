@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/VJ-2303/ecommerce-api-go/internal/data"
-	"github.com/VJ-2303/ecommerce-api-go/internal/validator"
+	"github.com/VJ-2303/CityStars/internal/data"
+	"github.com/VJ-2303/CityStars/internal/validator"
 )
 
 func (app *application) CreateUserHandler(w http.ResponseWriter, r *http.Request) {

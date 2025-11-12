@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/VJ-2303/ecommerce-api-go/internal/validator"
+	"github.com/VJ-2303/CityStars/internal/validator"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -40,3 +40,13 @@ func (v *Validator) Check(ok bool, key, message string) {
 func Matches(value string, rx *regexp.Regexp) bool {
 	return rx.MatchString(value)
 }
+
+// PermittedValue checks if a value is in a list of permitted values
+func PermittedValue(value string, permittedValues ...string) bool {
+	for _, v := range permittedValues {
+		if value == v {
+			return true
+		}
+	}
+	return false
+}

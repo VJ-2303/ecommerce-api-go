@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/VJ-2303/ecommerce-api-go/internal/data"
+	"github.com/VJ-2303/CityStars/internal/data"
 )
 
 const version = "1.0.0"
