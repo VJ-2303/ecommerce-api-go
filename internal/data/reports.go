@@ -74,7 +74,7 @@ func (m ReportModel) Insert(report *Report) error {
 		"pending",
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	return m.DB.QueryRowContext(ctx, query, args...).Scan(
@@ -98,7 +98,7 @@ func (m ReportModel) Get(id int64) (*Report, error) {
 	var report Report
 	var completedAt sql.NullTime
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query, id).Scan(
@@ -146,7 +146,7 @@ func (m ReportModel) GetAll(limit, offset int, status, category string) ([]*Repo
 		LIMIT $1 OFFSET $2
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	rows, err := m.DB.QueryContext(ctx, query, limit, offset, status, category)
@@ -208,7 +208,7 @@ func (m ReportModel) GetByUserID(userID int64, limit, offset int) ([]*Report, er
 		LIMIT $2 OFFSET $3
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	rows, err := m.DB.QueryContext(ctx, query, userID, limit, offset)
@@ -269,7 +269,7 @@ func (m ReportModel) Update(id int64, status, afterImage string) error {
 		RETURNING id
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	var returnedID int64
@@ -305,7 +305,7 @@ func (m ReportModel) GetStats() (*ReportStats, error) {
 		FROM reports
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	var stats ReportStats
@@ -343,7 +343,7 @@ func (m ReportModel) GetLeaderboard() ([]*LeaderboardEntry, error) {
 		LIMIT 10
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	rows, err := m.DB.QueryContext(ctx, query)

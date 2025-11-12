@@ -70,7 +70,7 @@ func (m UserModel) Insert(user *User) error {
 	`
 	args := []any{user.Name, user.PhoneNumber, user.Password.hash}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query, args...).Scan(
@@ -95,7 +95,7 @@ func (m UserModel) GetByPhoneNumber(phoneNumber string) (*User, error) {
 				    `
 	var u User
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query, phoneNumber).Scan(
